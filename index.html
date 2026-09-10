@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aura Farmeo - Cazador de Aura</title>
+    <title>Aura Farmeo - El Juez Definitivo</title>
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#ff007f">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;0,900;1,900&display=swap" rel="stylesheet">
@@ -157,7 +157,7 @@
         .member-name { font-size: 11px; font-weight: 900; color: #fff; text-transform: uppercase; }
         .member-role { font-size: 9px; color: #00e5ff; font-weight: 700; }
 
-        /* ==== CÁMARA CON JUEGO DE PRECISIÓN DE AURA ==== */
+        /* ==== CÁMARA MODO JUEZ ÁRBITRO DE BATALLAS ==== */
         .scanner-container { 
             position: absolute; bottom: 15px; left: 0; width: 100%; 
             display: flex; flex-direction: column; align-items: center; gap: 10px; 
@@ -176,11 +176,6 @@
             border: 1px solid rgba(255,204,0,0.5); text-align: center;
         }
 
-        #energy-game-box { display: flex; width: 100%; flex-direction: column; align-items: center; gap: 8px; background: rgba(13,2,33,0.92); padding: 14px; border-radius: 14px; border: 2px solid #ff007f; box-shadow: 0 0 25px rgba(255,0,127,0.6); }
-        .energy-track { width: 100%; height: 26px; background: #111; border: 2px solid #ffcc00; border-radius: 10px; position: relative; overflow: hidden; cursor: pointer; }
-        .energy-target { position: absolute; left: 38%; width: 24%; height: 100%; background: rgba(255,204,0,0.45); border-left: 2px solid #ffcc00; border-right: 2px solid #ffcc00; }
-        .energy-pointer { position: absolute; top: 0; left: 0px; width: 6px; height: 100%; background: #00e5ff; box-shadow: 0 0 12px #00e5ff; }
-
         .tap-certify-btn {
             background: linear-gradient(135deg, #ff007f, #00e5ff); color: #fff; border: 2px solid #fff;
             padding: 14px 24px; border-radius: 30px; font-weight: 900; font-size: 12px; text-transform: uppercase;
@@ -188,13 +183,25 @@
         }
         .tap-certify-btn:active { transform: scale(0.95); }
 
-        /* ==== TETRIS ARCADE ==== */
-        .tetris-wrapper { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 10px; width: 100%; height: 100%; justify-content: center; }
-        #tetris-board { background: #000; border: 3px solid #00e5ff; box-shadow: 0 0 25px rgba(0,229,255,0.6); display: grid; grid-template-columns: repeat(10, 26px); grid-template-rows: repeat(18, 26px); gap: 1px; }
-        .tetris-cell { width: 26px; height: 26px; background: #111; border-radius: 2px; transition: background 0.1s; }
+        .judge-battle-box {
+            position: absolute; top: 60px; left: 15px; right: 15px;
+            background: rgba(13, 2, 33, 0.9); border: 2px solid #00e5ff; border-radius: 16px;
+            padding: 12px; text-align: center; box-shadow: 0 0 20px rgba(0,229,255,0.4); z-index: 10;
+        }
+
+        /* ==== TETRIS GIGANTE PERFECTAMENTE RESTAURADO Y VISIBLE ==== */
+        .tetris-wrapper { 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            gap: 8px; padding: 10px; width: 100%; height: 100%; overflow: hidden; 
+        }
+        #tetris-board { 
+            background: #000; border: 3px solid #00e5ff; box-shadow: 0 0 25px rgba(0,229,255,0.6); 
+            display: grid; grid-template-columns: repeat(10, 22px); grid-template-rows: repeat(18, 22px); gap: 1px; 
+        }
+        .tetris-cell { width: 22px; height: 22px; background: #111; border-radius: 2px; transition: background 0.1s; }
         
-        .tetris-controls { display: grid; grid-template-columns: repeat(4, 75px); gap: 8px; justify-content: center; margin-top: 8px; }
-        .t-btn { background: rgba(0,229,255,0.25); border: 2px solid #00e5ff; color: #00e5ff; font-weight: 900; padding: 14px 0; border-radius: 12px; cursor: pointer; font-size: 18px; box-shadow: 0 0 10px rgba(0,229,255,0.3); }
+        .tetris-controls { display: grid; grid-template-columns: repeat(4, 75px); gap: 8px; justify-content: center; margin-top: 6px; }
+        .t-btn { background: rgba(0,229,255,0.25); border: 2px solid #00e5ff; color: #00e5ff; font-weight: 900; padding: 12px 0; border-radius: 10px; cursor: pointer; font-size: 16px; box-shadow: 0 0 10px rgba(0,229,255,0.3); }
         .t-btn:active { background: #00e5ff; color: #000; transform: scale(0.95); }
         
         @keyframes lineExplosion {
@@ -362,7 +369,7 @@
                         <div class="tier-text" style="text-align: center; margin-bottom: 8px; color: #ff007f;">ESTADÍSTICAS & RACHA DIARIA</div>
                         <div class="stats-grid">
                             <div>Racha Diaria:<br><strong id="stat-streak" style="color:#00e5ff;">1 Día 🔥</strong></div>
-                            <div>Bono Diario:<br><strong style="color:#ffcc00;">+15,000 Pts</strong></div>
+                            <div>Bono Diario:<br><strong style="color:#ffcc00;">+5,000 Pts</strong></div>
                             <div>Batallas Ganadas:<br><strong id="stat-wins">0</strong></div>
                             <div class="highlight">Juicios Realizados:<br><strong id="stat-judged">0 Salas</strong></div>
                         </div>
@@ -420,31 +427,28 @@
                 </div>
             </div>
 
-            <!-- VISTA CÁMARA CON MINIJUEGO DE REFLEJOS EN VIVO -->
+            <!-- VISTA MODO JUEZ ÁRBITRO DE BATALLAS -->
             <div id="view-scanner" class="app-view">
                 <div class="camera-top-bar">
                     <button class="room-btn secondary" onclick="alternarCamara()" style="width: auto; padding: 6px 12px; font-size: 10px; margin: 0;">🔄 CAMBIAR CÁMARA</button>
-                    <div class="result-display-clean" id="result-box">¡Atrapa la energía en el centro!</div>
+                    <div class="result-display-clean" id="result-box">🛡️ Árbitro Activo: Listo para batallas</div>
+                </div>
+
+                <div class="judge-battle-box">
+                    <div style="font-size: 11px; font-weight: 900; color: #00e5ff; margin-bottom: 4px;">⚔️ DUELO DE CONTRAATAQUE ⚔️</div>
+                    <div style="font-size: 10px; color: #ccc;" id="battle-status">Esperando contrincantes en cuadro...</div>
                 </div>
 
                 <div class="scanner-container">
-                    <div id="energy-game-box">
-                        <p style="font-size:10px; color:#ffcc00; font-weight:900;">¡TOCA EN EL CENTRO EXACTO PARA CERTIFICAR AURA!</p>
-                        <div class="energy-track" id="energy-track">
-                            <div class="energy-target"></div>
-                            <div class="energy-pointer" id="energy-pointer"></div>
-                        </div>
-                    </div>
-
-                    <button class="tap-certify-btn" onclick="iniciarMinijuegoAura()">⚡ LANZAR ONDA DE AURA</button>
+                    <button class="tap-certify-btn" onclick="arbitrarBatallaAura()">⚡ CERTIFICAR CONTRAATAQUE (JUEZ)</button>
                 </div>
             </div>
 
             <!-- VISTA TETRIS GIGANTE -->
             <div id="view-bibaura" class="app-view">
                 <div class="tetris-wrapper">
-                    <div style="font-size:13px; font-weight:900; color:#00e5ff; letter-spacing:1px;">TETRIS AURA ARCADE (GIGANTE)</div>
-                    <div style="font-size:11px; color:#ffcc00; font-weight:700;">Puntaje: <span id="tetris-score">0</span></div>
+                    <div style="font-size:12px; font-weight:900; color:#00e5ff; letter-spacing:1px;">TETRIS AURA ARCADE</div>
+                    <div style="font-size:10px; color:#ffcc00; font-weight:700;">Puntaje: <span id="tetris-score">0</span></div>
                     <div id="tetris-board"></div>
                     <div class="tetris-controls">
                         <button class="t-btn" onclick="tetrisMove(-1)">◀</button>
@@ -452,7 +456,7 @@
                         <button class="t-btn" onclick="tetrisDrop()">⚡</button>
                         <button class="t-btn" onclick="tetrisMove(1)">▶</button>
                     </div>
-                    <button class="room-btn create" id="btn-iniciar-tetris" onclick="iniciarTetris()" style="margin-top: 4px; padding: 12px; font-size: 13px;">🎮 JUGAR TETRIS DIARIO (1/1)</button>
+                    <button class="room-btn create" id="btn-iniciar-tetris" onclick="iniciarTetris()" style="margin-top: 4px; padding: 10px; font-size: 12px;">🎮 JUGAR TETRIS DIARIO (1/1)</button>
                 </div>
             </div>
 
@@ -565,7 +569,7 @@
             <!-- BARRA DE NAVEGACIÓN -->
             <div class="nav-bar">
                 <button class="nav-btn active" onclick="cambiarVista('view-profile', this)"><span class="icon">📊</span>PERFIL</button>
-                <button class="nav-btn" onclick="cambiarVista('view-scanner', this)"><span class="icon">📷</span>CÁMARA</button>
+                <button class="nav-btn" onclick="cambiarVista('view-scanner', this)"><span class="icon">📷</span>JUEZ</button>
                 <button class="nav-btn" onclick="cambiarVista('view-bibaura', this)"><span class="icon">🕹️</span>TETRIS</button>
                 <button class="nav-btn" onclick="cambiarVista('view-map', this)"><span class="icon">🔑</span>SALAS</button>
                 <button class="nav-btn" onclick="cambiarVista('view-shop', this)"><span class="icon">💎</span>TIENDA</button>
@@ -609,9 +613,40 @@
             if (audioCtx.state === 'suspended') audioCtx.resume();
         }, { once: true });
 
+        let personaEnCuadro = false;
         let usarCamaraTrasera = true;
         let videoElement = document.getElementById('camera-background');
+        let pose = null;
         let cameraInstance = null;
+
+        function inicializarMediaPipe() {
+            pose = new Pose({
+                locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`
+            });
+
+            pose.setOptions({
+                modelComplexity: 1,
+                smoothLandmarks: true,
+                enableSegmentation: false,
+                minDetectionConfidence: 0.65,
+                minTrackingConfidence: 0.65
+            });
+
+            pose.onResults((results) => {
+                const statusEl = document.getElementById("battle-status");
+                if (results.poseLandmarks) {
+                    const lm = results.poseLandmarks;
+                    if (lm[0].visibility > 0.6 && lm[11].visibility > 0.6 && lm[12].visibility > 0.6) {
+                        personaEnCuadro = true;
+                        statusEl.innerHTML = `<span style="color:#00e5ff;">✓ Contrincante detectado. ¡Listo para certificar!</span>`;
+                        return;
+                    }
+                }
+                personaEnCuadro = false;
+                statusEl.innerHTML = `<span style="color:#ff3333;">⚠️ Ningún retador en cuadro. Acérquese a la cámara.</span>`;
+            });
+        }
+        inicializarMediaPipe();
 
         function iniciarCamara() {
             if (cameraInstance) {
@@ -621,7 +656,11 @@
             let constraintsMode = usarCamaraTrasera ? { exact: "environment" } : "user";
 
             cameraInstance = new Camera(videoElement, {
-                onFrame: async () => {},
+                onFrame: async () => {
+                    if (videoElement.style.display === "block" && pose) {
+                        await pose.send({ image: videoElement });
+                    }
+                },
                 width: { ideal: 640 },
                 height: { ideal: 480 },
                 facingMode: constraintsMode
@@ -629,7 +668,9 @@
 
             cameraInstance.start().catch(err => {
                 let fallbackCam = new Camera(videoElement, {
-                    onFrame: async () => {},
+                    onFrame: async () => { 
+                        if (videoElement.style.display === "block" && pose) await pose.send({ image: videoElement }); 
+                    },
                     width: { ideal: 640 }, height: { ideal: 480 }, 
                     facingMode: usarCamaraTrasera ? "environment" : "user"
                 });
@@ -641,7 +682,49 @@
         function alternarCamara() {
             usarCamaraTrasera = !usarCamaraTrasera;
             iniciarCamara();
+            personaEnCuadro = false;
             mostrarToast(usarCamaraTrasera ? "🔄 Cámara Trasera Activa" : "🔄 Cámara Frontal Activa");
+        }
+
+        function arbitrarBatallaAura() {
+            const resultBox = document.getElementById("result-box");
+
+            if (!personaEnCuadro) {
+                mostrarToast("❌ ¡Nadie en cuadro! El juez no puede arbitrar sin retador.");
+                resultBox.innerText = "⚠️ Coloca al retador frente a la cámara";
+                return;
+            }
+
+            resultBox.innerText = "🛡️ JUEZ ANALIZANDO CONTRAATAQUE...";
+            playArcadeSound('move');
+
+            setTimeout(() => {
+                let tipoBatalla = Math.random();
+                let recompensaAura = Math.floor(Math.random() * (45000 - 10000 + 1)) + 10000;
+
+                if (tipoBatalla > 0.25) {
+                    auraTotal += recompensaAura;
+                    winsCount++;
+                    document.getElementById("stat-wins").innerText = winsCount;
+                    actualizarHUD();
+                    playArcadeSound('tetris_explosion');
+                    
+                    const frame = document.getElementById("main-phone-frame");
+                    frame.classList.add("shake-effect");
+                    setTimeout(() => frame.classList.remove("shake-effect"), 400);
+
+                    resultBox.innerText = `🔥 ¡CONTRAATAQUE EXITOSO! +${recompensaAura.toLocaleString()} Pts`;
+                    mostrarToast(`🏆 ¡VICTORIA DE AURA CERTIFICADA!`);
+                } else {
+                    let perdida = 15000;
+                    auraTotal = Math.max(0, auraTotal - perdida);
+                    actualizarHUD();
+                    playArcadeSound('drop');
+
+                    resultBox.innerText = `💥 ¡CONTRAATAQUE DÉBIL! -${perdida.toLocaleString()} Pts`;
+                    mostrarToast(`❌ ¡DERROTADO POR CRINGE!`);
+                }
+            }, 1200);
         }
 
         let videoActivado = false;
@@ -691,12 +774,12 @@
             let racha = parseInt(localStorage.getItem("aura_racha") || "1");
 
             if (ultimoAcceso !== hoy) {
-                auraTotal += 15000;
+                auraTotal += 5000;
                 if (ultimoAcceso) racha += 1;
                 localStorage.setItem("aura_ultimo_login", hoy);
                 localStorage.setItem("aura_racha", racha);
                 localStorage.setItem("aura_puntos", auraTotal);
-                setTimeout(() => mostrarToast(`🔥 ¡BONO DIARIO DE RACHA: +15,000 PTS! 🔥`), 1500);
+                setTimeout(() => mostrarToast(`🔥 ¡BONO DIARIO DE RACHA: +5,000 PTS! 🔥`), 1500);
             } else {
                 auraTotal = parseInt(localStorage.getItem("aura_puntos") || "0");
             }
@@ -715,12 +798,12 @@
         window.addEventListener('load', verificarRachaDiaria);
 
         function calcularRangoAura(puntos) {
-            if (puntos < 100000) return { nombre: "AURA INERTE (Básico Inicial)", color: "#777777", porcentaje: (puntos / 100000) * 100 };
-            if (puntos < 400000) return { nombre: "AURA BLANCA (Despierta)", color: "#ffffff", porcentaje: ((puntos - 100000) / 300000) * 100 };
-            if (puntos < 800000) return { nombre: "AURA AZUL (Vital)", color: "#00e5ff", porcentaje: ((puntos - 400000) / 400000) * 100 };
-            if (puntos < 1500000) return { nombre: "AURA ROJA (Enigmática)", color: "#ff007f", porcentaje: ((puntos - 800000) / 700000) * 100 };
-            if (puntos < 2500000) return { nombre: "AURA DORADA (Resplandeciente)", color: "#ffcc00", porcentaje: ((puntos - 1500000) / 1000000) * 100 };
-            if (puntos < 4000000) return { nombre: "AURA ASTRAL (Cósmico)", color: "#9933ff", porcentaje: ((puntos - 2500000) / 1500000) * 100 };
+            if (puntos < 250000) return { nombre: "AURA INERTE (Básico Inicial)", color: "#777777", porcentaje: (puntos / 250000) * 100 };
+            if (puntos < 800000) return { nombre: "AURA BLANCA (Despierta)", color: "#ffffff", porcentaje: ((puntos - 250000) / 550000) * 100 };
+            if (puntos < 1800000) return { nombre: "AURA AZUL (Vital)", color: "#00e5ff", porcentaje: ((puntos - 800000) / 1000000) * 100 };
+            if (puntos < 3500000) return { nombre: "AURA ROJA (Enigmática)", color: "#ff007f", porcentaje: ((puntos - 1800000) / 1700000) * 100 };
+            if (puntos < 6000000) return { nombre: "AURA DORADA (Resplandeciente)", color: "#ffcc00", porcentaje: ((puntos - 3500000) / 2500000) * 100 };
+            if (puntos < 10000000) return { nombre: "AURA ASTRAL (Cósmico)", color: "#9933ff", porcentaje: ((puntos - 6000000) / 4000000) * 100 };
             return { nombre: "🔥 AURA GOD (Legendaria) 🔥", color: "#ff3333", porcentaje: 100 };
         }
 
@@ -729,7 +812,7 @@
             localStorage.setItem("aura_puntos", auraTotal);
             
             const needle = document.getElementById("gauge-needle");
-            let rotation = Math.min(Math.max((auraTotal / 4000000) * 100 - 50, -50), 50);
+            let rotation = Math.min(Math.max((auraTotal / 10000000) * 100 - 50, -50), 50);
             needle.style.transform = `rotate(${rotation}deg)`;
 
             let rango = calcularRangoAura(auraTotal);
@@ -867,61 +950,6 @@
             cambiarVista('view-scanner', scannerBtnNav);
         }
 
-        // === MINIJUEGO DE REFLEJOS Y ENERGÍA DE AURA ===
-        let energyInterval = null;
-        let pointerPos = 0;
-        let movingRight = true;
-
-        function iniciarMinijuegoAura() {
-            const resultBox = document.getElementById("result-box");
-            resultBox.innerText = "⚡ ¡LANZANDO ONDA DE AURA! Toca la barra al centro";
-
-            let pointer = document.getElementById("energy-pointer");
-            pointerPos = 0; movingRight = true;
-
-            if(energyInterval) clearInterval(energyInterval);
-
-            energyInterval = setInterval(() => {
-                if(movingRight) {
-                    pointerPos += 5;
-                    if(pointerPos >= 240) movingRight = false;
-                } else {
-                    pointerPos -= 5;
-                    if(pointerPos <= 0) movingRight = true;
-                }
-                pointer.style.left = pointerPos + "px";
-            }, 20);
-        }
-
-        document.getElementById('energy-track').onclick = function() {
-            if(energyInterval) {
-                clearInterval(energyInterval);
-                energyInterval = null;
-
-                let multiplier = 1;
-                // Si acierta en el objetivo amarillo central
-                if(pointerPos >= 90 && pointerPos <= 150) {
-                    multiplier = 5;
-                    playArcadeSound('tetris_explosion');
-                } else {
-                    playArcadeSound('drop');
-                }
-
-                let baseRNG = Math.floor(Math.random() * (30000 - 5000 + 1)) + 5000;
-                let total = baseRNG * multiplier;
-                auraTotal += total;
-
-                actualizarHUD();
-                if(multiplier > 1) {
-                    document.getElementById("result-box").innerText = `🎯 ¡GOLPE CRÍTICO DE AURA! +${total.toLocaleString()}`;
-                    mostrarToast(`🔥 ¡CRÍTICO! +${total.toLocaleString()} PTS!`);
-                } else {
-                    document.getElementById("result-box").innerText = `⚡ ¡Impacto registrado! +${total.toLocaleString()}`;
-                    mostrarToast(`✨ +${total.toLocaleString()} Pts de Aura`);
-                }
-            }
-        };
-
         const BOARD_WIDTH = 10;
         const BOARD_HEIGHT = 18;
         let tetrisBoard = Array(BOARD_HEIGHT).fill().map(() => Array(BOARD_WIDTH).fill(0));
@@ -1052,9 +1080,9 @@
             }
 
             if(lineasEliminadas > 0) {
-                let puntosExtra = lineasEliminadas * 1000;
+                let puntosExtra = lineasEliminadas * 500;
                 tetrisScore += puntosExtra;
-                auraTotal += lineasEliminadas * 5000;
+                auraTotal += lineasEliminadas * 1500;
                 document.getElementById("tetris-score").innerText = tetrisScore;
                 actualizarHUD();
 
@@ -1118,15 +1146,15 @@
 
             setTimeout(() => {
                 let gana = Math.random() > 0.3;
-                let premio = 35000;
+                let premio = 15000;
                 if(gana) {
                     auraTotal += premio;
                     winsCount++;
                     document.getElementById("stat-wins").innerText = winsCount;
                     resultDiv.innerHTML = `<span style="color:#00e5ff;">¡VICTORIA EN SALA PIN!</span><br>+${premio.toLocaleString()} Pts obtenidos.`;
                 } else {
-                    auraTotal = Math.max(0, auraTotal - 15000);
-                    resultDiv.innerHTML = `<span style="color:#ff3333;">¡DERROTA VALIDADA!</span><br>-15,000 Pts perdidos.`;
+                    auraTotal = Math.max(0, auraTotal - 10000);
+                    resultDiv.innerHTML = `<span style="color:#ff3333;">¡DERROTA VALIDADA!</span><br>-10,000 Pts perdidos.`;
                 }
                 actualizarHUD();
                 btn.innerText = "CERRAR SALA";
