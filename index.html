@@ -23,10 +23,10 @@
             border: 2px solid #222; box-shadow: 0 0 50px rgba(255, 0, 128, 0.3); overflow: hidden;
         }
 
-        /* Cámara exclusiva de la sección de cámara, orientada al frente (selfie) */
+        /* Cámara corregida sin zoom forzado ni efecto distorsionado */
         #camera-background { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            object-fit: cover; z-index: 0; opacity: 0.85; transform: scaleX(-1); 
+            object-fit: cover; z-index: 0; opacity: 0.9; 
             display: none; 
         }
 
@@ -127,14 +127,13 @@
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: center; font-size: 11px; color: #ddd; font-weight: 700; align-items: center; justify-content: center; }
         .stats-grid .highlight { color: #ffcc00; font-weight: 900; text-shadow: 0 0 6px rgba(255,204,0,0.7); margin-top: 4px; font-size: 12px; }
 
-        /* ==== SALAS PIN Y LISTA DE MIEMBROS EN VIVO ==== */
+        /* ==== SALAS PIN Y LISTA DE MIEMBROS ==== */
         .room-panel { padding: 15px; margin-bottom: 15px; text-align: center; }
         .room-input { width: 100%; padding: 12px; background: rgba(0,0,0,0.7); color: #00e5ff; border: 1px solid #00e5ff; border-radius: 10px; margin-bottom: 10px; font-size: 16px; font-weight: 900; text-align: center; letter-spacing: 2px; }
         .room-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #ff007f, #00e5ff); color: #fff; border: none; border-radius: 10px; font-weight: 900; cursor: pointer; text-transform: uppercase; font-size: 12px; margin-bottom: 8px; box-shadow: 0 0 10px rgba(255,0,127,0.5); }
         .room-btn.secondary { background: rgba(0,229,255,0.15); border: 1px solid #00e5ff; color: #00e5ff; }
         .room-btn.create { background: linear-gradient(135deg, #00e5ff, #7f00ff); box-shadow: 0 0 12px rgba(0,229,255,0.6); }
 
-        /* Panel de Perfiles Conectados en la Sala */
         .room-members-box {
             background: rgba(0,0,0,0.6); border: 1px solid #ff007f; border-radius: 14px;
             padding: 12px; margin-top: 12px; max-height: 180px; overflow-y: auto; text-align: left;
@@ -155,7 +154,7 @@
         }
         .pvp-box { background: #0d0221; border: 2px solid #ff007f; border-radius: 18px; padding: 25px; width: 100%; max-width: 330px; box-shadow: 0 0 30px rgba(255,0,127,0.6); }
 
-        /* ==== BIBAURA (COMPLETO) ==== */
+        /* ==== BIBAURA ==== */
         .bibaura-header-container { text-align: center; margin-bottom: 20px; padding: 18px; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .bibaura-logo { font-size: 40px; margin-bottom: 6px; filter: drop-shadow(0 0 12px #ff007f); }
         .bibaura-title { font-size: 26px; font-weight: 900; font-style: italic; color: #ff007f; letter-spacing: 2px; text-shadow: 0 0 14px rgba(255,0,127,0.8); text-align: center; width: 100%; }
@@ -349,7 +348,7 @@
                 </div>
             </div>
 
-            <!-- VISTA CÁMARA / JUEZ -->
+            <!-- VISTA CÁMARA / JUEZ (SIN ZOOM FORZADO) -->
             <div id="view-scanner" class="app-view">
                 <div class="scanner-container">
                     <div class="hud-status-badge">👁️ MODO CÁMARA JUEZ ACTIVADO</div>
@@ -422,12 +421,12 @@
                 </div>
             </div>
 
-            <!-- VISTA SALAS DE CÓDIGO PIN CON PERFILES DE MIEMBROS -->
+            <!-- VISTA SALAS DE CÓDIGO PIN (LIMPIA DE SIMULACIONES FALSAS) -->
             <div id="view-map" class="app-view">
                 <div class="bibaura-header-container glass-panel">
                     <div class="bibaura-logo">🔑</div>
                     <div class="bibaura-title">SALAS CÓDIGO PIN</div>
-                    <p style="font-size: 12px; color: #ccc; margin-top: 6px; font-weight: 700;">Verifica perfiles y compite de forma segura</p>
+                    <p style="font-size: 12px; color: #ccc; margin-top: 6px; font-weight: 700;">Crea una sala nueva o ingresa el PIN de tu amigo</p>
                 </div>
 
                 <div class="glass-panel room-panel">
@@ -446,7 +445,7 @@
                     <button class="room-btn secondary" onclick="entrarComoJuez()">🛡️ ENTRAR COMO JUEZ (CÁMARA)</button>
                 </div>
 
-                <!-- Panel de perfiles conectados en la sala actual -->
+                <!-- Panel de tu perfil en la sala -->
                 <div class="glass-panel room-panel" style="margin-top: 5px;">
                     <div class="gauge-title" style="color: #ff007f; margin-bottom: 6px;" id="room-active-title">MIEMBROS EN LA SALA (0)</div>
                     <div class="room-members-box" id="room-members-list">
@@ -543,11 +542,11 @@
     </div>
 
     <script>
-        // === INTELIGENCIA ARTIFICIAL: MEDIAPIPE POSE (JUEZ) ===
+        // === INTELIGENCIA ARTIFICIAL: MEDIAPIPE POSE CON CÁMARA NORMAL (SIN ZOOM) ===
         let personaDetectada = false;
         let rolActual = "competidor"; 
         let salaActivaPin = null;
-        let miembrosSala = []; // Lista para almacenar los perfiles de la sala
+        let miembrosSala = [];
 
         const videoElement = document.getElementById('camera-background');
 
@@ -559,8 +558,8 @@
             modelComplexity: 1,
             smoothLandmarks: true,
             enableSegmentation: false,
-            minDetectionConfidence: 0.75,
-            minTrackingConfidence: 0.75
+            minDetectionConfidence: 0.70,
+            minTrackingConfidence: 0.70
         });
 
         pose.onResults((results) => {
@@ -570,7 +569,7 @@
                 const leftShoulderVis = landmarks[11].visibility || 0;
                 const rightShoulderVis = landmarks[12].visibility || 0;
 
-                if (noseVis > 0.75 && leftShoulderVis > 0.75 && rightShoulderVis > 0.75) {
+                if (noseVis > 0.70 && leftShoulderVis > 0.70 && rightShoulderVis > 0.70) {
                     personaDetectada = true;
                     return;
                 }
@@ -578,14 +577,16 @@
             personaDetectada = false;
         });
 
+        // Configuración de MediaPipe Camera con restricciones nativas para evitar zoom excesivo
         const camera = new Camera(videoElement, {
             onFrame: async () => {
                 if (videoElement.style.display === "block") {
                     await pose.send({ image: videoElement });
                 }
             },
-            width: 480,
-            height: 640
+            width: { ideal: 640 },
+            height: { ideal: 480 },
+            facingMode: "user"
         });
         camera.start().catch(err => console.error("Error iniciando cámara IA:", err));
 
@@ -631,7 +632,6 @@
         let tempIsImage = false;
         const avatarEmojis = ['🦊','👽','🗿','🤖','👻','👑','🔥','🐱'];
 
-        // === SISTEMA OFICIAL DE RANGOS DE AURA ===
         function calcularRangoAura(puntos) {
             if (puntos < 100000) return { nombre: "AURA INERTE (Básico Inicial)", color: "#777777", porcentaje: (puntos / 100000) * 100 };
             if (puntos < 400000) return { nombre: "AURA BLANCA (Despierta)", color: "#ffffff", porcentaje: ((puntos - 100000) / 300000) * 100 };
@@ -704,7 +704,6 @@
             mostrarToast("¡Perfil actualizado!");
         }
 
-        // === GESTIÓN DE SALAS PIN Y PERFILES EN VIVO ===
         function actualizarListaMiembros() {
             const box = document.getElementById("room-members-list");
             const title = document.getElementById("room-active-title");
@@ -721,7 +720,6 @@
             miembrosSala.forEach(m => {
                 let row = document.createElement("div");
                 row.className = "member-row";
-                
                 let avatarHTML = m.isImg ? `<img src="${m.avatar}">` : m.avatar;
                 row.innerHTML = `
                     <div class="member-avatar">${avatarHTML}</div>
@@ -742,21 +740,11 @@
             judgesCount++;
             document.getElementById("stat-judged").innerText = `${judgesCount} Salas`;
             
-            // Agregar al creador como anfitrión/juez y simular un rival conectado tras un segundo
             miembrosSala = [
                 { name: currentUsername, avatar: currentAvatar, isImg: isImageAvatar, role: "🛡️ Anfitrión / Juez Oficial" }
             ];
             actualizarListaMiembros();
-            mostrarToast(`✨ Sala #${nuevoPin} creada. ¡Comparte el código!`);
-
-            // Simulación realista: Un amigo se une a tu sala a los pocos segundos
-            setTimeout(() => {
-                if(salaActivaPin === nuevoPin) {
-                    miembrosSala.push({ name: "AURA_SLAYER_99", avatar: "🤖", isImg: false, role: "⚔️ Competidor 1v1" });
-                    actualizarListaMiembros();
-                    mostrarToast("🔔 ¡AURA_SLAYER_99 se ha unido a tu sala!");
-                }
-            }, 3000);
+            mostrarToast(`✨ Sala #${nuevoPin} creada. ¡Comparte el PIN!`);
         }
 
         function unirseSala(modo) {
@@ -768,9 +756,7 @@
             salaActivaPin = pin;
             rolActual = "competidor";
             
-            // Te agregas tú y agregas al host de esa sala
             miembrosSala = [
-                { name: "HOST_MASTER_" + pin, avatar: "👑", isImg: false, role: "🛡️ Juez de Sala" },
                 { name: currentUsername, avatar: currentAvatar, isImg: isImageAvatar, role: `⚔️ Competidor (${modo})` }
             ];
             actualizarListaMiembros();
@@ -790,9 +776,7 @@
             document.getElementById("stat-judged").innerText = `${judgesCount} Salas`;
             
             miembrosSala = [
-                { name: currentUsername, avatar: currentAvatar, isImg: isImageAvatar, role: "🛡️ Juez Arbitro (Tú)" },
-                { name: "CHALLENGER_X", avatar: "🗿", isImg: false, role: "⚔️ Competidor 1" },
-                { name: "GIGA_CHAD_7", avatar: "🔥", isImg: false, role: "⚔️ Competidor 2" }
+                { name: currentUsername, avatar: currentAvatar, isImg: isImageAvatar, role: "🛡️ Juez Árbitro" }
             ];
             actualizarListaMiembros();
             mostrarToast(`🛡️ Eres el Juez oficial de la Sala ${pin}`);
@@ -802,7 +786,7 @@
             document.getElementById("status-text").innerText = `[ JUEZ SALA ${pin}: CÁMARA ACTIVA ]`;
         }
 
-        // === MINIJUEGO DE REACCIÓN CON FILTRO IA ===
+        // === MINIJUEGO DE REACCIÓN CON FILTRO IA (BARRIDO DE PRECISIÓN DE AURA) ===
         let gameInterval = null;
         let pointerPos = 0;
         let movingRight = true;
@@ -814,7 +798,7 @@
 
             if (!personaDetectada) {
                 statusText.innerText = "❌ ¡NO SE DETECTA PERSONA EN CÁMARA!";
-                resultBox.innerText = rolActual === 'juez' ? "El juez debe enfocar al competidor" : "Apunta a alguien real";
+                resultBox.innerText = rolActual === 'juez' ? "El juez debe enfocar al competidor" : "Apunta tu cámara frontal";
                 reactionBox.style.display = "none";
                 return;
             }
@@ -865,7 +849,6 @@
             }
         };
 
-        // === BATALLAS PVP 1V1 / 2V2 ===
         function abrirPvp(rival, apuesta) {
             document.getElementById("pvp-status").innerText = `Sala PIN Activada. Competencia justa supervisada por Cámara Juez.`;
             document.getElementById("pvp-result").innerText = "";
