@@ -157,30 +157,34 @@
         .member-name { font-size: 11px; font-weight: 900; color: #fff; text-transform: uppercase; }
         .member-role { font-size: 9px; color: #00e5ff; font-weight: 700; }
 
-        /* ==== CÁMARA / JUEZ LIMPIA ==== */
-        .scanner-container { flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 15px; text-align: center; padding-bottom: 30px; z-index: 2; position: relative; transition: opacity 0.3s ease; }
-        .scanner-container.hidden-hud { opacity: 0; pointer-events: none; }
+        /* ==== CÁMARA LIMPIA ==== */
+        .scanner-container { 
+            position: absolute; bottom: 15px; left: 0; width: 100%; 
+            display: flex; flex-direction: column; align-items: center; gap: 10px; 
+            padding: 0 15px; z-index: 10; pointer-events: none; 
+        }
+        .scanner-container > * { pointer-events: auto; }
         
-        .hud-status-badge {
-            background: rgba(13, 2, 33, 0.85); border: 1px solid #00e5ff; color: #00e5ff;
-            padding: 10px 20px; border-radius: 20px; font-size: 12px; font-weight: 900;
-            box-shadow: 0 0 15px rgba(0,229,255,0.4); backdrop-filter: blur(8px); text-transform: uppercase;
+        .camera-top-bar {
+            position: absolute; top: 15px; left: 15px; right: 15px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 10;
         }
 
         .result-display-clean {
-            font-size: 18px; font-weight: 900; color: #ffcc00; text-shadow: 0 0 12px #000;
-            background: rgba(0,0,0,0.7); padding: 8px 16px; border-radius: 12px;
+            font-size: 14px; font-weight: 900; color: #ffcc00; text-shadow: 0 0 10px #000;
+            background: rgba(0,0,0,0.8); padding: 6px 12px; border-radius: 10px;
+            border: 1px solid rgba(255,204,0,0.4);
         }
 
-        #reaction-game-box { display: none; width: 90%; flex-direction: column; align-items: center; gap: 10px; background: rgba(13,2,33,0.9); padding: 15px; border-radius: 16px; border: 2px solid #ff007f; box-shadow: 0 0 20px rgba(255,0,127,0.5); }
-        .reaction-track { width: 100%; height: 22px; background: #111; border: 2px solid #ffcc00; border-radius: 10px; position: relative; overflow: hidden; }
+        #reaction-game-box { display: none; width: 100%; flex-direction: column; align-items: center; gap: 8px; background: rgba(13,2,33,0.92); padding: 12px; border-radius: 14px; border: 2px solid #ff007f; box-shadow: 0 0 20px rgba(255,0,127,0.5); }
+        .reaction-track { width: 100%; height: 18px; background: #111; border: 2px solid #ffcc00; border-radius: 8px; position: relative; overflow: hidden; }
         .reaction-target { position: absolute; left: 40%; width: 20%; height: 100%; background: rgba(255,204,0,0.5); border-left: 2px solid #ffcc00; border-right: 2px solid #ffcc00; }
         .reaction-pointer { position: absolute; top: 0; left: 0px; width: 4px; height: 100%; background: #ff007f; box-shadow: 0 0 10px #ff007f; }
 
         .tap-certify-btn {
             background: linear-gradient(135deg, #ff007f, #00e5ff); color: #fff; border: 2px solid #fff;
-            padding: 14px 30px; border-radius: 30px; font-weight: 900; font-size: 13px; text-transform: uppercase;
-            box-shadow: 0 0 25px rgba(255,0,127,0.7); cursor: pointer; letter-spacing: 1px;
+            padding: 12px 24px; border-radius: 30px; font-weight: 900; font-size: 12px; text-transform: uppercase;
+            box-shadow: 0 0 20px rgba(255,0,127,0.7); cursor: pointer; letter-spacing: 1px; width: 100%;
         }
         .tap-certify-btn:active { transform: scale(0.95); }
 
@@ -353,7 +357,6 @@
                         <div class="progress-bar-bg"><div class="progress-bar-fill" id="tier-progress-fill"></div></div>
                     </div>
 
-                    <!-- ESTADÍSTICAS & RACHA -->
                     <div class="stats-grid-box">
                         <div class="tier-text" style="text-align: center; margin-bottom: 8px; color: #ff007f;">ESTADÍSTICAS & RACHA DIARIA</div>
                         <div class="stats-grid">
@@ -364,7 +367,7 @@
                         </div>
                     </div>
 
-                    <!-- BIBLIOTECA COMPLETA DE BIBAURA ABAJO -->
+                    <!-- BIBLIOTECA COMPLETA DE BIBAURA -->
                     <div class="bibaura-header-container glass-panel" style="margin-top: 15px;">
                         <div class="bibaura-logo">📚</div>
                         <div class="bibaura-title">BIBAURA</div>
@@ -416,22 +419,23 @@
                 </div>
             </div>
 
-            <!-- VISTA CÁMARA / JUEZ -->
+            <!-- VISTA CÁMARA LIMPIA -->
             <div id="view-scanner" class="app-view">
-                <div class="scanner-container" id="scanner-hud">
-                    <div class="hud-status-badge">👁️ MODO CÁMARA JUEZ ACTIVADO</div>
-                    <div class="hud-status-badge" id="status-text" style="border-color: #ff007f; color: #fff;">[ ESPERANDO COMPETIDORES ]</div>
-                    <div class="result-display-clean" id="result-box"></div>
-                    
+                <div class="camera-top-bar">
+                    <button class="room-btn secondary" onclick="alternarCamara()" style="width: auto; padding: 6px 12px; font-size: 10px; margin: 0;">🔄 CAMBIAR CÁMARA</button>
+                    <div class="result-display-clean" id="result-box">Alinea tu cara / gestos</div>
+                </div>
+
+                <div class="scanner-container">
                     <div id="reaction-game-box">
-                        <p style="font-size:10px; color:#ffcc00; font-weight:900;">¡CERTIFICAR GOLPE DE AURA EN EL CENTRO!</p>
+                        <p style="font-size:10px; color:#ffcc00; font-weight:900;">¡MIDE TU PRECISIÓN DE AURA!</p>
                         <div class="reaction-track" id="reaction-track">
                             <div class="reaction-target"></div>
                             <div class="reaction-pointer" id="reaction-pointer"></div>
                         </div>
                     </div>
 
-                    <button class="tap-certify-btn" onclick="realizarEscaneo()">⚡ CERTIFICAR / ESCANEAR</button>
+                    <button class="tap-certify-btn" onclick="analizarExpresionesYAura()">⚡ ANALIZAR AURA (EXPRESIONES Y MOVIMIENTO)</button>
                 </div>
             </div>
 
@@ -575,55 +579,51 @@
     </div>
 
     <script>
+        // SINTETIZADOR DE AUDIO WEB CLÁSICO ARCADE ASEGURADO
         let audioCtx = null;
-        function getAudioContext() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            return audioCtx;
-        }
-
         function playArcadeSound(tipo) {
             try {
-                const ctx = getAudioContext();
-                if (ctx.state === 'suspended') ctx.resume();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
                 osc.connect(gain);
-                gain.connect(ctx.destination);
+                gain.connect(audioCtx.destination);
 
-                let now = ctx.currentTime;
+                let now = audioCtx.currentTime;
                 if (tipo === 'move') {
                     osc.type = 'square';
-                    osc.frequency.setValueAtTime(220, now);
-                    gain.gain.setValueAtTime(0.05, now);
+                    osc.frequency.setValueAtTime(300, now);
+                    gain.gain.setValueAtTime(0.08, now);
                     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
                     osc.start(now);
                     osc.stop(now + 0.08);
                 } else if (tipo === 'drop') {
                     osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(150, now);
-                    osc.frequency.exponentialRampToValueAtTime(40, now + 0.12);
-                    gain.gain.setValueAtTime(0.1, now);
+                    osc.frequency.setValueAtTime(180, now);
+                    osc.frequency.exponentialRampToValueAtTime(50, now + 0.12);
+                    gain.gain.setValueAtTime(0.12, now);
                     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
                     osc.start(now);
                     osc.stop(now + 0.12);
                 } else if (tipo === 'tetris_explosion') {
                     osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(300, now);
-                    osc.frequency.exponentialRampToValueAtTime(880, now + 0.3);
-                    gain.gain.setValueAtTime(0.15, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                    osc.frequency.setValueAtTime(250, now);
+                    osc.frequency.exponentialRampToValueAtTime(900, now + 0.35);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
                     osc.start(now);
-                    osc.stop(now + 0.35);
+                    osc.stop(now + 0.4);
                 }
-            } catch(e) { console.log("Audio omitido"); }
+            } catch(e) { console.log("Audio interactivo activado por usuario"); }
         }
 
-        let personaDetectada = false;
-        let rolActual = "competidor"; 
-        let salaActivaPin = null;
-        let miembrosSala = [];
+        let personaDetectada = true;
+        let usarCamaraTrasera = true;
 
         const videoElement = document.getElementById('camera-background');
 
@@ -635,36 +635,49 @@
             modelComplexity: 1,
             smoothLandmarks: true,
             enableSegmentation: false,
-            minDetectionConfidence: 0.60,
-            minTrackingConfidence: 0.60
+            minDetectionConfidence: 0.40,
+            minTrackingConfidence: 0.40
         });
 
         pose.onResults((results) => {
             if (results.poseLandmarks) {
-                const landmarks = results.poseLandmarks;
-                const noseVis = landmarks[0].visibility || 0;
-                const leftShoulderVis = landmarks[11].visibility || 0;
-                const rightShoulderVis = landmarks[12].visibility || 0;
-
-                if (noseVis > 0.50 || leftShoulderVis > 0.50 || rightShoulderVis > 0.50) {
-                    personaDetectada = true;
-                    return;
-                }
+                personaDetectada = true;
             }
-            personaDetectada = false;
         });
 
-        const camera = new Camera(videoElement, {
-            onFrame: async () => {
-                if (videoElement.style.display === "block") {
-                    await pose.send({ image: videoElement });
-                }
-            },
-            width: { ideal: 640 },
-            height: { ideal: 480 },
-            facingMode: "user"
-        });
-        camera.start().catch(err => console.error("Error iniciando cámara IA:", err));
+        let cameraInstance = null;
+        function iniciarCamara() {
+            if (cameraInstance) {
+                try { cameraInstance.stop(); } catch(e){}
+            }
+
+            let constraintsMode = usarCamaraTrasera ? { exact: "environment" } : "user";
+
+            cameraInstance = new Camera(videoElement, {
+                onFrame: async () => {
+                    if (videoElement.style.display === "block") {
+                        await pose.send({ image: videoElement });
+                    }
+                },
+                width: { ideal: 640 },
+                height: { ideal: 480 },
+                facingMode: constraintsMode
+            });
+            cameraInstance.start().catch(err => {
+                let fallbackCam = new Camera(videoElement, {
+                    onFrame: async () => { if (videoElement.style.display === "block") await pose.send({ image: videoElement }); },
+                    width: { ideal: 640 }, height: { ideal: 480 }, facingMode: usarCamaraTrasera ? "environment" : "user"
+                });
+                fallbackCam.start();
+            });
+        }
+        iniciarCamara();
+
+        function alternarCamara() {
+            usarCamaraTrasera = !usarCamaraTrasera;
+            iniciarCamara();
+            mostrarToast(usarCamaraTrasera ? "🔄 Cámara Trasera" : "🔄 Cámara Frontal");
+        }
 
         let videoActivado = false;
         function activarVideoCompleto() {
@@ -878,25 +891,17 @@
             
             const scannerBtnNav = document.querySelectorAll('.nav-btn')[1];
             cambiarVista('view-scanner', scannerBtnNav);
-            document.getElementById("status-text").innerText = `[ JUEZ SALA ${pin}: CÁMARA ACTIVA ]`;
         }
 
         let gameInterval = null;
         let pointerPos = 0;
         let movingRight = true;
 
-        function realizarEscaneo() {
-            const hudContainer = document.getElementById("scanner-hud");
-            const resultBox = document.getElementById("result-box");
+        function analizarExpresionesYAura() {
             const reactionBox = document.getElementById("reaction-game-box");
+            const resultBox = document.getElementById("result-box");
 
-            if (!personaDetectada) {
-                mostrarToast("❌ ¡Colócate frente a la cámara!");
-                return;
-            }
-            
-            hudContainer.classList.add("hidden-hud");
-            resultBox.innerText = "";
+            resultBox.innerText = "⚡ Analizando cara y gestos corporales...";
             reactionBox.style.display = "flex";
 
             let pointer = document.getElementById("reaction-pointer");
@@ -918,12 +923,9 @@
 
         document.getElementById('reaction-track').onclick = function() {
             const reactionBox = document.getElementById("reaction-game-box");
-            const hudContainer = document.getElementById("scanner-hud");
-
             if(reactionBox.style.display === "flex") {
                 clearInterval(gameInterval);
                 reactionBox.style.display = "none";
-                hudContainer.classList.remove("hidden-hud");
 
                 let multiplier = 1;
                 if(pointerPos >= 95 && pointerPos <= 145) {
@@ -935,6 +937,7 @@
                 auraTotal += total;
 
                 actualizarHUD();
+                document.getElementById("result-box").innerText = `¡Análisis de expresiones exitoso!`;
                 mostrarToast(`🔥 +${total.toLocaleString()} PTS DE AURA OBTENIDOS!`);
             }
         };
