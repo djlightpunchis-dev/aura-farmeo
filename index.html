@@ -188,7 +188,7 @@
         }
         .tap-certify-btn:active { transform: scale(0.95); }
 
-        /* ==== TETRIS GIGANTE DE PANTALLA COMPLETA Y BOTONES GIGANTES ==== */
+        /* ==== TETRIS ARCADE ==== */
         .tetris-wrapper { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 10px; width: 100%; height: 100%; justify-content: center; }
         #tetris-board { background: #000; border: 3px solid #00e5ff; box-shadow: 0 0 25px rgba(0,229,255,0.6); display: grid; grid-template-columns: repeat(10, 26px); grid-template-rows: repeat(18, 26px); gap: 1px; }
         .tetris-cell { width: 26px; height: 26px; background: #111; border-radius: 2px; transition: background 0.1s; }
@@ -420,11 +420,11 @@
                 </div>
             </div>
 
-            <!-- VISTA CÁMARA LIMPIA -->
+            <!-- VISTA CÁMARA LIMPIA Y ROBUSTA -->
             <div id="view-scanner" class="app-view">
                 <div class="camera-top-bar">
                     <button class="room-btn secondary" onclick="alternarCamara()" style="width: auto; padding: 6px 12px; font-size: 10px; margin: 0;">🔄 CAMBIAR CÁMARA</button>
-                    <div class="result-display-clean" id="result-box">Alinea tu cara / gestos</div>
+                    <div class="result-display-clean" id="result-box">Alinea tu cuerpo frente a la cámara</div>
                 </div>
 
                 <div class="scanner-container">
@@ -440,9 +440,9 @@
                 </div>
             </div>
 
-            <!-- VISTA TETRIS GIGANTE (LÍMITE 1 VEZ AL DÍA) -->
+            <!-- VISTA TETRIS GIGANTE Y CON SONIDO ASEGURADO -->
             <div id="view-bibaura" class="app-view">
-                <div class="glass-panel tetris-wrapper">
+                <div class="tetris-wrapper">
                     <div style="font-size:13px; font-weight:900; color:#00e5ff; letter-spacing:1px;">TETRIS AURA ARCADE (GIGANTE)</div>
                     <div style="font-size:11px; color:#ffcc00; font-weight:700;">Puntaje: <span id="tetris-score">0</span></div>
                     <div id="tetris-board"></div>
@@ -575,7 +575,7 @@
     </div>
 
     <script>
-        // SINTETIZADOR DE AUDIO MÓVIL FORZADO (WEB AUDIO API)
+        // SINTETIZADOR DE AUDIO MÓVIL BLINDADO PARA INICIAR CON CUALQUIER TOQUE
         let audioCtx = null;
         function playArcadeSound(tipo) {
             try {
@@ -593,55 +593,74 @@
                 let now = audioCtx.currentTime;
                 if (tipo === 'move') {
                     osc.type = 'square';
-                    osc.frequency.setValueAtTime(300, now);
-                    gain.gain.setValueAtTime(0.15, now);
+                    osc.frequency.setValueAtTime(320, now);
+                    gain.gain.setValueAtTime(0.2, now);
                     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
                     osc.start(now);
                     osc.stop(now + 0.1);
                 } else if (tipo === 'drop') {
                     osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(180, now);
-                    osc.frequency.exponentialRampToValueAtTime(40, now + 0.15);
-                    gain.gain.setValueAtTime(0.2, now);
+                    osc.frequency.setValueAtTime(200, now);
+                    osc.frequency.exponentialRampToValueAtTime(50, now + 0.15);
+                    gain.gain.setValueAtTime(0.25, now);
                     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
                     osc.start(now);
                     osc.stop(now + 0.15);
                 } else if (tipo === 'tetris_explosion') {
                     osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(250, now);
-                    osc.frequency.exponentialRampToValueAtTime(880, now + 0.4);
-                    gain.gain.setValueAtTime(0.25, now);
+                    osc.frequency.setValueAtTime(300, now);
+                    osc.frequency.exponentialRampToValueAtTime(950, now + 0.4);
+                    gain.gain.setValueAtTime(0.3, now);
                     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
                     osc.start(now);
                     osc.stop(now + 0.45);
                 }
-            } catch(e) { console.log("Audio activado por toque"); }
+            } catch(e) { console.log("Audio activado"); }
         }
 
-        let personaDetectada = true;
-        let usarCamaraTrasera = true;
-
-        const videoElement = document.getElementById('camera-background');
-
-        const pose = new Pose({
-            locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`
-        });
-
-        pose.setOptions({
-            modelComplexity: 1,
-            smoothLandmarks: true,
-            enableSegmentation: false,
-            minDetectionConfidence: 0.40,
-            minTrackingConfidence: 0.40
-        });
-
-        pose.onResults((results) => {
-            if (results.poseLandmarks) {
-                personaDetectada = true;
+        // Desbloquear audio al primer toque en cualquier botón o pantalla
+        window.addEventListener('pointerdown', () => {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
-        });
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }, { once: true });
 
+        let personaDetectada = false;
+        let usarCamaraTrasera = true;
+        let videoElement = document.getElementById('camera-background');
+        let pose = null;
         let cameraInstance = null;
+
+        function inicializarMediaPipe() {
+            pose = new Pose({
+                locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`
+            });
+
+            pose.setOptions({
+                modelComplexity: 1,
+                smoothLandmarks: true,
+                enableSegmentation: false,
+                minDetectionConfidence: 0.65, // Umbral estricto para evitar falsos positivos
+                minTrackingConfidence: 0.65
+            });
+
+            pose.onResults((results) => {
+                if (results.poseLandmarks) {
+                    const lm = results.poseLandmarks;
+                    // Verifica que la nariz y los hombros tengan visibilidad real frente a la cámara
+                    if (lm[0].visibility > 0.60 && lm[11].visibility > 0.60 && lm[12].visibility > 0.60) {
+                        personaDetectada = true;
+                        return;
+                    }
+                }
+                personaDetectada = false;
+            });
+        }
+        inicializarMediaPipe();
+
         function iniciarCamara() {
             if (cameraInstance) {
                 try { cameraInstance.stop(); } catch(e){}
@@ -651,7 +670,7 @@
 
             cameraInstance = new Camera(videoElement, {
                 onFrame: async () => {
-                    if (videoElement.style.display === "block") {
+                    if (videoElement.style.display === "block" && pose) {
                         await pose.send({ image: videoElement });
                     }
                 },
@@ -659,10 +678,14 @@
                 height: { ideal: 480 },
                 facingMode: constraintsMode
             });
+
             cameraInstance.start().catch(err => {
                 let fallbackCam = new Camera(videoElement, {
-                    onFrame: async () => { if (videoElement.style.display === "block") await pose.send({ image: videoElement }); },
-                    width: { ideal: 640 }, height: { ideal: 480 }, facingMode: usarCamaraTrasera ? "environment" : "user"
+                    onFrame: async () => { 
+                        if (videoElement.style.display === "block" && pose) await pose.send({ image: videoElement }); 
+                    },
+                    width: { ideal: 640 }, height: { ideal: 480 }, 
+                    facingMode: usarCamaraTrasera ? "environment" : "user"
                 });
                 fallbackCam.start();
             });
@@ -671,8 +694,9 @@
 
         function alternarCamara() {
             usarCamaraTrasera = !usarCamaraTrasera;
+            personaDetectada = false;
             iniciarCamara();
-            mostrarToast(usarCamaraTrasera ? "🔄 Cámara Trasera" : "🔄 Cámara Frontal");
+            mostrarToast(usarCamaraTrasera ? "🔄 Cámara Trasera Activa" : "🔄 Cámara Frontal Activa");
         }
 
         let videoActivado = false;
@@ -732,7 +756,6 @@
                 auraTotal = parseInt(localStorage.getItem("aura_puntos") || "0");
             }
 
-            // Validar límite diario de Tetris
             const ultimoTetris = localStorage.getItem("aura_tetris_fecha");
             if (ultimoTetris === hoy) {
                 const btnT = document.getElementById("btn-iniciar-tetris");
@@ -907,6 +930,12 @@
             const reactionBox = document.getElementById("reaction-game-box");
             const resultBox = document.getElementById("result-box");
 
+            if (!personaDetectada) {
+                mostrarToast("❌ ¡Colócate frente a la cámara!");
+                resultBox.innerText = "⚠️ No se detecta persona frente a la cámara";
+                return;
+            }
+
             resultBox.innerText = "⚡ Analizando cara y gestos corporales...";
             reactionBox.style.display = "flex";
 
@@ -948,7 +977,6 @@
             }
         };
 
-        // === TETRIS GIGANTE (LÍMITE 1 VEZ AL DÍA CON BOTÓN DE CAÍDA RÁPIDA) ===
         const BOARD_WIDTH = 10;
         const BOARD_HEIGHT = 18;
         let tetrisBoard = Array(BOARD_HEIGHT).fill().map(() => Array(BOARD_WIDTH).fill(0));
