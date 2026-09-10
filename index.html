@@ -157,7 +157,7 @@
         .member-name { font-size: 11px; font-weight: 900; color: #fff; text-transform: uppercase; }
         .member-role { font-size: 9px; color: #00e5ff; font-weight: 700; }
 
-        /* ==== CÁMARA LIMPIA ==== */
+        /* ==== CÁMARA CON JUEGO DE PRECISIÓN DE AURA ==== */
         .scanner-container { 
             position: absolute; bottom: 15px; left: 0; width: 100%; 
             display: flex; flex-direction: column; align-items: center; gap: 10px; 
@@ -171,19 +171,19 @@
         }
 
         .result-display-clean {
-            font-size: 14px; font-weight: 900; color: #ffcc00; text-shadow: 0 0 10px #000;
-            background: rgba(0,0,0,0.8); padding: 6px 12px; border-radius: 10px;
-            border: 1px solid rgba(255,204,0,0.4);
+            font-size: 13px; font-weight: 900; color: #ffcc00; text-shadow: 0 0 10px #000;
+            background: rgba(0,0,0,0.85); padding: 8px 14px; border-radius: 12px;
+            border: 1px solid rgba(255,204,0,0.5); text-align: center;
         }
 
-        #reaction-game-box { display: none; width: 100%; flex-direction: column; align-items: center; gap: 8px; background: rgba(13,2,33,0.92); padding: 12px; border-radius: 14px; border: 2px solid #ff007f; box-shadow: 0 0 20px rgba(255,0,127,0.5); }
-        .reaction-track { width: 100%; height: 18px; background: #111; border: 2px solid #ffcc00; border-radius: 8px; position: relative; overflow: hidden; }
-        .reaction-target { position: absolute; left: 40%; width: 20%; height: 100%; background: rgba(255,204,0,0.5); border-left: 2px solid #ffcc00; border-right: 2px solid #ffcc00; }
-        .reaction-pointer { position: absolute; top: 0; left: 0px; width: 4px; height: 100%; background: #ff007f; box-shadow: 0 0 10px #ff007f; }
+        #energy-game-box { display: flex; width: 100%; flex-direction: column; align-items: center; gap: 8px; background: rgba(13,2,33,0.92); padding: 14px; border-radius: 14px; border: 2px solid #ff007f; box-shadow: 0 0 25px rgba(255,0,127,0.6); }
+        .energy-track { width: 100%; height: 26px; background: #111; border: 2px solid #ffcc00; border-radius: 10px; position: relative; overflow: hidden; cursor: pointer; }
+        .energy-target { position: absolute; left: 38%; width: 24%; height: 100%; background: rgba(255,204,0,0.45); border-left: 2px solid #ffcc00; border-right: 2px solid #ffcc00; }
+        .energy-pointer { position: absolute; top: 0; left: 0px; width: 6px; height: 100%; background: #00e5ff; box-shadow: 0 0 12px #00e5ff; }
 
         .tap-certify-btn {
             background: linear-gradient(135deg, #ff007f, #00e5ff); color: #fff; border: 2px solid #fff;
-            padding: 12px 24px; border-radius: 30px; font-weight: 900; font-size: 12px; text-transform: uppercase;
+            padding: 14px 24px; border-radius: 30px; font-weight: 900; font-size: 12px; text-transform: uppercase;
             box-shadow: 0 0 20px rgba(255,0,127,0.7); cursor: pointer; letter-spacing: 1px; width: 100%;
         }
         .tap-certify-btn:active { transform: scale(0.95); }
@@ -204,7 +204,7 @@
         }
         .exploding { animation: lineExplosion 0.5s ease-in-out; }
 
-        /* ==== BIBAURA (BIBLIOTECA COMPLETA) ==== */
+        /* ==== BIBAURA ==== */
         .bibaura-header-container { text-align: center; margin-bottom: 15px; padding: 15px; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .bibaura-logo { font-size: 36px; margin-bottom: 4px; filter: drop-shadow(0 0 12px #ff007f); }
         .bibaura-title { font-size: 22px; font-weight: 900; font-style: italic; color: #ff007f; letter-spacing: 2px; text-shadow: 0 0 14px rgba(255,0,127,0.8); text-align: center; width: 100%; }
@@ -420,27 +420,27 @@
                 </div>
             </div>
 
-            <!-- VISTA CÁMARA LIMPIA Y ROBUSTA -->
+            <!-- VISTA CÁMARA CON MINIJUEGO DE REFLEJOS EN VIVO -->
             <div id="view-scanner" class="app-view">
                 <div class="camera-top-bar">
                     <button class="room-btn secondary" onclick="alternarCamara()" style="width: auto; padding: 6px 12px; font-size: 10px; margin: 0;">🔄 CAMBIAR CÁMARA</button>
-                    <div class="result-display-clean" id="result-box">Alinea tu cuerpo frente a la cámara</div>
+                    <div class="result-display-clean" id="result-box">¡Atrapa la energía en el centro!</div>
                 </div>
 
                 <div class="scanner-container">
-                    <div id="reaction-game-box">
-                        <p style="font-size:10px; color:#ffcc00; font-weight:900;">¡MIDE TU PRECISIÓN DE AURA!</p>
-                        <div class="reaction-track" id="reaction-track">
-                            <div class="reaction-target"></div>
-                            <div class="reaction-pointer" id="reaction-pointer"></div>
+                    <div id="energy-game-box">
+                        <p style="font-size:10px; color:#ffcc00; font-weight:900;">¡TOCA EN EL CENTRO EXACTO PARA CERTIFICAR AURA!</p>
+                        <div class="energy-track" id="energy-track">
+                            <div class="energy-target"></div>
+                            <div class="energy-pointer" id="energy-pointer"></div>
                         </div>
                     </div>
 
-                    <button class="tap-certify-btn" onclick="analizarExpresionesYAura()">⚡ ANALIZAR AURA (EXPRESIONES Y MOVIMIENTO)</button>
+                    <button class="tap-certify-btn" onclick="iniciarMinijuegoAura()">⚡ LANZAR ONDA DE AURA</button>
                 </div>
             </div>
 
-            <!-- VISTA TETRIS GIGANTE Y CON SONIDO ASEGURADO -->
+            <!-- VISTA TETRIS GIGANTE -->
             <div id="view-bibaura" class="app-view">
                 <div class="tetris-wrapper">
                     <div style="font-size:13px; font-weight:900; color:#00e5ff; letter-spacing:1px;">TETRIS AURA ARCADE (GIGANTE)</div>
@@ -575,91 +575,43 @@
     </div>
 
     <script>
-        // SINTETIZADOR DE AUDIO MÓVIL BLINDADO PARA INICIAR CON CUALQUIER TOQUE
         let audioCtx = null;
         function playArcadeSound(tipo) {
             try {
-                if (!audioCtx) {
-                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
-
                 let now = audioCtx.currentTime;
+
                 if (tipo === 'move') {
-                    osc.type = 'square';
-                    osc.frequency.setValueAtTime(320, now);
-                    gain.gain.setValueAtTime(0.2, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
-                    osc.start(now);
-                    osc.stop(now + 0.1);
+                    osc.type = 'square'; osc.frequency.setValueAtTime(320, now);
+                    gain.gain.setValueAtTime(0.2, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+                    osc.start(now); osc.stop(now + 0.1);
                 } else if (tipo === 'drop') {
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(200, now);
-                    osc.frequency.exponentialRampToValueAtTime(50, now + 0.15);
-                    gain.gain.setValueAtTime(0.25, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
-                    osc.start(now);
-                    osc.stop(now + 0.15);
+                    osc.type = 'triangle'; osc.frequency.setValueAtTime(180, now);
+                    osc.frequency.exponentialRampToValueAtTime(40, now + 0.15);
+                    gain.gain.setValueAtTime(0.25, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+                    osc.start(now); osc.stop(now + 0.15);
                 } else if (tipo === 'tetris_explosion') {
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(300, now);
+                    osc.type = 'sawtooth'; osc.frequency.setValueAtTime(300, now);
                     osc.frequency.exponentialRampToValueAtTime(950, now + 0.4);
-                    gain.gain.setValueAtTime(0.3, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
-                    osc.start(now);
-                    osc.stop(now + 0.45);
+                    gain.gain.setValueAtTime(0.3, now); gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+                    osc.start(now); osc.stop(now + 0.45);
                 }
-            } catch(e) { console.log("Audio activado"); }
+            } catch(e) {}
         }
 
-        // Desbloquear audio al primer toque en cualquier botón o pantalla
         window.addEventListener('pointerdown', () => {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
         }, { once: true });
 
-        let personaDetectada = false;
         let usarCamaraTrasera = true;
         let videoElement = document.getElementById('camera-background');
-        let pose = null;
         let cameraInstance = null;
-
-        function inicializarMediaPipe() {
-            pose = new Pose({
-                locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`
-            });
-
-            pose.setOptions({
-                modelComplexity: 1,
-                smoothLandmarks: true,
-                enableSegmentation: false,
-                minDetectionConfidence: 0.65, // Umbral estricto para evitar falsos positivos
-                minTrackingConfidence: 0.65
-            });
-
-            pose.onResults((results) => {
-                if (results.poseLandmarks) {
-                    const lm = results.poseLandmarks;
-                    // Verifica que la nariz y los hombros tengan visibilidad real frente a la cámara
-                    if (lm[0].visibility > 0.60 && lm[11].visibility > 0.60 && lm[12].visibility > 0.60) {
-                        personaDetectada = true;
-                        return;
-                    }
-                }
-                personaDetectada = false;
-            });
-        }
-        inicializarMediaPipe();
 
         function iniciarCamara() {
             if (cameraInstance) {
@@ -669,11 +621,7 @@
             let constraintsMode = usarCamaraTrasera ? { exact: "environment" } : "user";
 
             cameraInstance = new Camera(videoElement, {
-                onFrame: async () => {
-                    if (videoElement.style.display === "block" && pose) {
-                        await pose.send({ image: videoElement });
-                    }
-                },
+                onFrame: async () => {},
                 width: { ideal: 640 },
                 height: { ideal: 480 },
                 facingMode: constraintsMode
@@ -681,9 +629,7 @@
 
             cameraInstance.start().catch(err => {
                 let fallbackCam = new Camera(videoElement, {
-                    onFrame: async () => { 
-                        if (videoElement.style.display === "block" && pose) await pose.send({ image: videoElement }); 
-                    },
+                    onFrame: async () => {},
                     width: { ideal: 640 }, height: { ideal: 480 }, 
                     facingMode: usarCamaraTrasera ? "environment" : "user"
                 });
@@ -694,7 +640,6 @@
 
         function alternarCamara() {
             usarCamaraTrasera = !usarCamaraTrasera;
-            personaDetectada = false;
             iniciarCamara();
             mostrarToast(usarCamaraTrasera ? "🔄 Cámara Trasera Activa" : "🔄 Cámara Frontal Activa");
         }
@@ -922,58 +867,58 @@
             cambiarVista('view-scanner', scannerBtnNav);
         }
 
-        let gameInterval = null;
+        // === MINIJUEGO DE REFLEJOS Y ENERGÍA DE AURA ===
+        let energyInterval = null;
         let pointerPos = 0;
         let movingRight = true;
 
-        function analizarExpresionesYAura() {
-            const reactionBox = document.getElementById("reaction-game-box");
+        function iniciarMinijuegoAura() {
             const resultBox = document.getElementById("result-box");
+            resultBox.innerText = "⚡ ¡LANZANDO ONDA DE AURA! Toca la barra al centro";
 
-            if (!personaDetectada) {
-                mostrarToast("❌ ¡Colócate frente a la cámara!");
-                resultBox.innerText = "⚠️ No se detecta persona frente a la cámara";
-                return;
-            }
-
-            resultBox.innerText = "⚡ Analizando cara y gestos corporales...";
-            reactionBox.style.display = "flex";
-
-            let pointer = document.getElementById("reaction-pointer");
+            let pointer = document.getElementById("energy-pointer");
             pointerPos = 0; movingRight = true;
 
-            if(gameInterval) clearInterval(gameInterval);
+            if(energyInterval) clearInterval(energyInterval);
 
-            gameInterval = setInterval(() => {
+            energyInterval = setInterval(() => {
                 if(movingRight) {
-                    pointerPos += 4;
+                    pointerPos += 5;
                     if(pointerPos >= 240) movingRight = false;
                 } else {
-                    pointerPos -= 4;
+                    pointerPos -= 5;
                     if(pointerPos <= 0) movingRight = true;
                 }
                 pointer.style.left = pointerPos + "px";
-            }, 25);
+            }, 20);
         }
 
-        document.getElementById('reaction-track').onclick = function() {
-            const reactionBox = document.getElementById("reaction-game-box");
-            if(reactionBox.style.display === "flex") {
-                clearInterval(gameInterval);
-                reactionBox.style.display = "none";
+        document.getElementById('energy-track').onclick = function() {
+            if(energyInterval) {
+                clearInterval(energyInterval);
+                energyInterval = null;
 
                 let multiplier = 1;
-                if(pointerPos >= 95 && pointerPos <= 145) {
+                // Si acierta en el objetivo amarillo central
+                if(pointerPos >= 90 && pointerPos <= 150) {
                     multiplier = 5;
+                    playArcadeSound('tetris_explosion');
+                } else {
+                    playArcadeSound('drop');
                 }
 
-                let baseRNG = Math.floor(Math.random() * (40000 - 5000 + 1)) + 5000;
+                let baseRNG = Math.floor(Math.random() * (30000 - 5000 + 1)) + 5000;
                 let total = baseRNG * multiplier;
                 auraTotal += total;
 
                 actualizarHUD();
-                document.getElementById("result-box").innerText = `¡Análisis de expresiones exitoso!`;
-                mostrarToast(`🔥 +${total.toLocaleString()} PTS DE AURA OBTENIDOS!`);
+                if(multiplier > 1) {
+                    document.getElementById("result-box").innerText = `🎯 ¡GOLPE CRÍTICO DE AURA! +${total.toLocaleString()}`;
+                    mostrarToast(`🔥 ¡CRÍTICO! +${total.toLocaleString()} PTS!`);
+                } else {
+                    document.getElementById("result-box").innerText = `⚡ ¡Impacto registrado! +${total.toLocaleString()}`;
+                    mostrarToast(`✨ +${total.toLocaleString()} Pts de Aura`);
+                }
             }
         };
 
