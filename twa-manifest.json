@@ -1,15 +1,33 @@
 {
+  "path": "https://djlightpunchis-dev.github.io/aura-farmeo/",
+  "domain": "djlightpunchis-dev.github.io",
+  "host": "djlightpunchis-dev.github.io",
   "name": "Aura Farmeo",
-  "short_name": "AuraFarmeo",
-  "start_url": "/aura-farmeo/",
+  "shortName": "AuraFarmeo",
+  "packageName": "com.israelrivera.aurafarmeo",
+  "packageId": "com.israelrivera.aurafarmeo",
+  "startUrl": "/aura-farmeo/",
   "display": "standalone",
-  "background_color": "#030305",
-  "theme_color": "#ff007f",
-  "icons": [
-    {
-      "src": "icon.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+  "themeColor": "#ff007f",
+  "backgroundColor": "#030305",
+  "navigationColor": "#030305",
+  "navigationColorDark": "#030305",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
+  "appId": "com.israelrivera.aurafarmeo",
+  "launcherName": "Aura Farmeo",
+  "iconUrl": "https://djlightpunchis-dev.github.io/aura-farmeo/icon.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "./android.keystore",
+    "alias": "android"
+  },
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://djlightpunchis-dev.github.io/aura-farmeo/manifest.json",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableNotifications": false
 }
