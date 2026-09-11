@@ -16,7 +16,7 @@
   "navigationDividerColorDark": "#000000",
   "appId": "com.israelrivera.aurafarmeo",
   "launcherName": "Aura Farmeo",
-  "webManifestUrl": "https://djlightpunchis-dev.github.io/aura-farmeo/index.html",
+  "webManifestUrl": "https://raw.githubusercontent.com/djlightpunchis-dev.github.io/aura-farmeo/main/twa-manifest.json",
   "splashScreenFadeOutDuration": 300,
   "signingKey": {
     "path": "./android.keystore",
