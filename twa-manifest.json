@@ -16,17 +16,21 @@
   "navigationDividerColorDark": "#000000",
   "appId": "com.israelrivera.aurafarmeo",
   "launcherName": "Aura Farmeo",
-  "webManifestUrl": "https://raw.githubusercontent.com/djlightpunchis-dev.github.io/aura-farmeo/main/twa-manifest.json",
+  "iconUrl": "https://djlightpunchis-dev.github.io/aura-farmeo/icon.png",
   "splashScreenFadeOutDuration": 300,
   "signingKey": {
     "path": "./android.keystore",
     "alias": "android"
   },
   "generatorApp": "bubblewrap-cli",
-  "webManifestUrl": "https://djlightpunchis-dev.github.io/aura-farmeo/manifest.json",
+  "webManifestUrl": "file:///C:/Users/DELL/Desktop/App%20AF/twa-manifest.json",
   "fallbackType": "customtabs",
   "features": {},
   "alphaDependencies": {
+    "enabled": false
+  },
+  "enableNotifications": false
+}
     "enabled": false
   },
   "enableNotifications": false
