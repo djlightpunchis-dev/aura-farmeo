@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.israelrivera.aurafarmeo",
+    "sha256_cert_fingerprints": [
+      "18:F1:4D:0B:0A:7F:64:40:D2:31:72:76:31:37:38:03:53:3C:6D:45:86:10:06:7E:ED:22:11:75:E9:E9:9E:5D"
+    ]
+  }
+}]
